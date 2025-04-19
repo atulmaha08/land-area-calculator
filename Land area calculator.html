@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Land Area Converter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+    input, select, button {
+      padding: 10px;
+      margin: 10px 0;
+      width: 320px;
+      font-size: 16px;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      background: #f2f2f2;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Land Area Converter</h2>
+
+  <label for="inputValue">Enter area:</label><br>
+  <input type="number" id="inputValue" placeholder="Enter numeric value"><br>
+
+  <label for="inputUnit">Select unit:</label><br>
+  <select id="inputUnit">
+    <option value="acre">Acre</option>
+    <option value="gunta">Gunta</option>
+    <option value="bigha_maha">Bigha (Maharashtra)</option>
+    <option value="sqft">Square Feet</option>
+    <option value="sqm">Square Meters</option>
+  </select><br>
+
+  <button onclick="convert()">Convert</button>
+
+  <div class="result" id="result"></div>
+
+  <script>
+    function convert() {
+      const value = parseFloat(document.getElementById('inputValue').value);
+      const unit = document.getElementById('inputUnit').value;
+
+      if (isNaN(value)) {
+        document.getElementById('result').innerHTML = "Please enter a valid number.";
+        return;
+      }
+
+      // More accurate conversion factors
+      const sqftPerUnit = {
+        sqft: 1,
+        sqm: 10.7639,
+        acre: 43560,
+        gunta: 1089,
+        bigha_maha: 26971.5 // Updated based on 1 acre = 1.613 bigha => 1 bigha = ~26,971.5 sq ft
+      };
+
+      const sqft = value * sqftPerUnit[unit];
+
+      const conversions = {
+        'Square Feet': sqft,
+        'Square Meters': sqft / 10.7639,
+        'Acres': sqft / 43560,
+        'Guntas': sqft / 1089,
+        'Bighas (Maharashtra)': sqft / 26971.5
+      };
+
+      let output = `<strong>${value} ${unit.replace('_', ' ')} is equal to:</strong><br><br>`;
+      for (let [label, val] of Object.entries(conversions)) {
+        output += `${label}: ${val.toFixed(4)}<br>`;
+      }
+
+      document.getElementById('result').innerHTML = output;
+    }
+  </script>
+
+</body>
+</html>
