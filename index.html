@@ -5,79 +5,79 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Land Area Converter</title>
 
-  <!-- Material Design Lite -->
-  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css" />
-  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-
   <style>
-    body {
-      font-family: 'Roboto', sans-serif;
+    html, body {
+      height: 100%;
       margin: 0;
       padding: 0;
-      background: url('https://plus.unsplash.com/premium_photo-1666865792731-0a2656f2b12c?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: url('https://plus.unsplash.com/premium_photo-1666865792731-0a2656f2b12c?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3') no-repeat center center;
       background-size: cover;
       background-attachment: scroll;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .container {
-      background: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.95);
       padding: 30px;
       border-radius: 8px;
       max-width: 500px;
-      margin: 60px auto;
+      width: 90%;
       box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    h4 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      margin-bottom: 15px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #2196F3;
+      color: white;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #1976D2;
     }
 
     .result {
       margin-top: 20px;
-      background: #eeeeee;
+      background: #f2f2f2;
       padding: 15px;
       border-radius: 6px;
       font-size: 16px;
-    }
-
-    .mdl-button.custom-button {
-      background-color: #2196F3;
-      color: white;
-      font-weight: bold;
-      width: 100%;
-      margin-top: 20px;
-    }
-
-    .mdl-button.custom-button:hover {
-      background-color: #1976D2;
-    }
-
-    input, select {
-      font-size: 16px !important;
-    }
-
-    @media (max-width: 600px) {
-      .container {
-        padding: 20px;
-        max-width: 90%;
-        margin-top: 20px;
-      }
-
-      h4 {
-        font-size: 1.2em;
-      }
     }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <h4 class="mdl-typography--title">🌾 Land Area Converter</h4>
+    <h4>🌾 Land Area Converter</h4>
 
-    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      <input class="mdl-textfield__input" type="number" id="inputValue" />
-      <label class="mdl-textfield__label" for="inputValue">Enter value...</label>
-    </div>
+    <input type="number" id="inputValue" placeholder="Enter value..." />
 
-    <br /><br />
-    <label><strong>Select Unit:</strong></label><br />
-    <select id="inputUnit" class="mdl-textfield__input" style="width:100%; padding: 10px;">
+    <label for="inputUnit"><strong>Select Unit:</strong></label>
+    <select id="inputUnit">
       <option value="acre">Acre (एकर)</option>
       <option value="gunta">Gunta (गुंठा)</option>
       <option value="bigha_maha">Bigha (बिघा)</option>
@@ -85,72 +85,58 @@
       <option value="sqm">Square Meters (चौ.मीटर)</option>
     </select>
 
-    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect custom-button">
-      Convert
-    </button>
+    <button id="convertBtn">Convert</button>
 
     <div class="result" id="result"></div>
   </div>
 
   <script>
-  function convert() {
-    const value = parseFloat(document.getElementById('inputValue').value);
-    const unit = document.getElementById('inputUnit').value;
+    document.addEventListener('DOMContentLoaded', function () {
+      document.getElementById('convertBtn').addEventListener('click', function () {
+        const value = parseFloat(document.getElementById('inputValue').value);
+        const unit = document.getElementById('inputUnit').value;
 
-    if (isNaN(value)) {
-      document.getElementById('result').innerHTML = "⚠️ Please enter a valid number.";
-      return;
-    }
+        if (isNaN(value)) {
+          document.getElementById('result').innerHTML = "⚠️ Please enter a valid number.";
+          return;
+        }
 
-    const sqftPerUnit = {
-      sqft: 1,
-      sqm: 10.7639,
-      acre: 43560,
-      gunta: 1089,
-      bigha_maha: 26971.5
-    };
+        const sqftPerUnit = {
+          sqft: 1,
+          sqm: 10.7639,
+          acre: 43560,
+          gunta: 1089,
+          bigha_maha: 26971.5
+        };
 
-    const sqft = value * sqftPerUnit[unit];
+        const sqft = value * sqftPerUnit[unit];
 
-    const conversions = {
-      'Square Feet': sqft,
-      'Square Meters': sqft / 10.7639,
-      'Acres': sqft / 43560,
-      'Guntas': sqft / 1089,
-      'Bighas (Maharashtra)': sqft / 26971.5
-    };
+        const conversions = {
+          'Square Feet': sqft,
+          'Square Meters': sqft / 10.7639,
+          'Acres': sqft / 43560,
+          'Guntas': sqft / 1089,
+          'Bighas (Maharashtra)': sqft / 26971.5
+        };
 
-    const marathiLabels = {
-      'Square Feet': 'Square Feet (चौ.फुट)',
-      'Square Meters': 'Square Meters (चौ.मीटर)',
-      'Acres': 'Acres (एकर)',
-      'Guntas': 'Guntas (गुंठा)',
-      'Bighas (Maharashtra)': 'Bighas (बिघा)'
-    };
+        const marathiLabels = {
+          'Square Feet': 'Square Feet (चौ.फुट)',
+          'Square Meters': 'Square Meters (चौ.मीटर)',
+          'Acres': 'Acres (एकर)',
+          'Guntas': 'Guntas (गुंठा)',
+          'Bighas (Maharashtra)': 'Bighas (बिघा)'
+        };
 
-    let output = `<strong>${value} ${document.getElementById('inputUnit').options[document.getElementById('inputUnit').selectedIndex].text}:</strong><br><br>`;
-    for (let [label, val] of Object.entries(conversions)) {
-      const displayLabel = marathiLabels[label] || label;
-      output += `➡️ <strong>${displayLabel}</strong>: ${val.toFixed(4)}<br>`;
-    }
+        let output = `<strong>${value} ${document.getElementById('inputUnit').options[document.getElementById('inputUnit').selectedIndex].text}:</strong><br><br>`;
+        for (let [label, val] of Object.entries(conversions)) {
+          const displayLabel = marathiLabels[label] || label;
+          output += `➡️ <strong>${displayLabel}</strong>: ${val.toFixed(4)}<br>`;
+        }
 
-    document.getElementById('result').innerHTML = output;
-  }
-
-  document.addEventListener('DOMContentLoaded', function () {
-    const button = document.querySelector('.custom-button');
-    if (button) {
-      // Attach click handler
-      button.addEventListener('click', convert);
-    }
-
-    // ✅ Force upgrade all MDL elements — this is crucial for iOS/safari
-    if (typeof componentHandler !== 'undefined') {
-      componentHandler.upgradeDom();
-    }
-  });
-</script>
-
+        document.getElementById('result').innerHTML = output;
+      });
+    });
+  </script>
 
 </body>
 </html>
