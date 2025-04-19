@@ -93,58 +93,64 @@
   </div>
 
   <script>
-    function convert() {
-      const value = parseFloat(document.getElementById('inputValue').value);
-      const unit = document.getElementById('inputUnit').value;
+  function convert() {
+    const value = parseFloat(document.getElementById('inputValue').value);
+    const unit = document.getElementById('inputUnit').value;
 
-      if (isNaN(value)) {
-        document.getElementById('result').innerHTML = "⚠️ Please enter a valid number.";
-        return;
-      }
-
-      const sqftPerUnit = {
-        sqft: 1,
-        sqm: 10.7639,
-        acre: 43560,
-        gunta: 1089,
-        bigha_maha: 26971.5
-      };
-
-      const sqft = value * sqftPerUnit[unit];
-
-      const conversions = {
-        'Square Feet': sqft,
-        'Square Meters': sqft / 10.7639,
-        'Acres': sqft / 43560,
-        'Guntas': sqft / 1089,
-        'Bighas (Maharashtra)': sqft / 26971.5
-      };
-
-      const marathiLabels = {
-        'Square Feet': 'Square Feet (चौ.फुट)',
-        'Square Meters': 'Square Meters (चौ.मीटर)',
-        'Acres': 'Acres (एकर)',
-        'Guntas': 'Guntas (गुंठा)',
-        'Bighas (Maharashtra)': 'Bighas (बिघा)'
-      };
-
-      let output = `<strong>${value} ${document.getElementById('inputUnit').options[document.getElementById('inputUnit').selectedIndex].text}:</strong><br><br>`;
-      for (let [label, val] of Object.entries(conversions)) {
-        const displayLabel = marathiLabels[label] || label;
-        output += `➡️ <strong>${displayLabel}</strong>: ${val.toFixed(4)}<br>`;
-      }
-
-      document.getElementById('result').innerHTML = output;
+    if (isNaN(value)) {
+      document.getElementById('result').innerHTML = "⚠️ Please enter a valid number.";
+      return;
     }
 
-    // Attach the event listener after DOM is loaded
-    document.addEventListener('DOMContentLoaded', function () {
-      const button = document.querySelector('.custom-button');
-      if (button) {
-        button.addEventListener('click', convert);
-      }
-    });
-  </script>
+    const sqftPerUnit = {
+      sqft: 1,
+      sqm: 10.7639,
+      acre: 43560,
+      gunta: 1089,
+      bigha_maha: 26971.5
+    };
+
+    const sqft = value * sqftPerUnit[unit];
+
+    const conversions = {
+      'Square Feet': sqft,
+      'Square Meters': sqft / 10.7639,
+      'Acres': sqft / 43560,
+      'Guntas': sqft / 1089,
+      'Bighas (Maharashtra)': sqft / 26971.5
+    };
+
+    const marathiLabels = {
+      'Square Feet': 'Square Feet (चौ.फुट)',
+      'Square Meters': 'Square Meters (चौ.मीटर)',
+      'Acres': 'Acres (एकर)',
+      'Guntas': 'Guntas (गुंठा)',
+      'Bighas (Maharashtra)': 'Bighas (बिघा)'
+    };
+
+    let output = `<strong>${value} ${document.getElementById('inputUnit').options[document.getElementById('inputUnit').selectedIndex].text}:</strong><br><br>`;
+    for (let [label, val] of Object.entries(conversions)) {
+      const displayLabel = marathiLabels[label] || label;
+      output += `➡️ <strong>${displayLabel}</strong>: ${val.toFixed(4)}<br>`;
+    }
+
+    document.getElementById('result').innerHTML = output;
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const button = document.querySelector('.custom-button');
+    if (button) {
+      // Attach click handler
+      button.addEventListener('click', convert);
+    }
+
+    // ✅ Force upgrade all MDL elements — this is crucial for iOS/safari
+    if (typeof componentHandler !== 'undefined') {
+      componentHandler.upgradeDom();
+    }
+  });
+</script>
+
 
 </body>
 </html>
