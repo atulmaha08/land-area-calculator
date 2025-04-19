@@ -16,7 +16,7 @@
       padding: 0;
       background: url('https://plus.unsplash.com/premium_photo-1666865792731-0a2656f2b12c?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center;
       background-size: cover;
-      background-attachment: scroll; /* prevent iOS issues with 'fixed' */
+      background-attachment: scroll;
     }
 
     .container {
@@ -48,7 +48,6 @@
       background-color: #1976D2;
     }
 
-    /* Ensure inputs on mobile don’t zoom */
     input, select {
       font-size: 16px !important;
     }
@@ -86,7 +85,7 @@
       <option value="sqm">Square Meters (चौ.मीटर)</option>
     </select>
 
-    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect custom-button" onclick="convert()">
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect custom-button">
       Convert
     </button>
 
@@ -137,4 +136,15 @@
 
       document.getElementById('result').innerHTML = output;
     }
+
+    // Attach the event listener after DOM is loaded
+    document.addEventListener('DOMContentLoaded', function () {
+      const button = document.querySelector('.custom-button');
+      if (button) {
+        button.addEventListener('click', convert);
+      }
+    });
   </script>
+
+</body>
+</html>
